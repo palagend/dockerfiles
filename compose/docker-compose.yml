@@ -1,0 +1,60 @@
+version: "3"
+
+services:
+    nginxProxy:
+        image: "daocloud.io/daocloud/nginx-proxy"
+        ports:
+            - "80:80"
+        volumes:
+            - "/var/run/docker.sock:/tmp/docker.sock:ro"
+        container_name: "nginx-proxy"
+    artifactory:
+        image: "hub.c.163.com/palagend/artifactory-oss"
+        environment:
+            VIRTUAL_HOST: artifactory.palagend.com
+        container_name: "artifactory"
+        extra_hosts:
+            - "keycloak.palagend.com:172.19.10.145"
+            - "jenkins.palagend.com:172.19.10.145"
+            - "artifactory.palagend.com:172.19.10.145"
+            - "portal.palagend.com:172.19.10.145"
+    jenkins:
+        image: "jenkins/jenkins:lts-slim"
+        environment:
+            VIRTUAL_HOST: jenkins.palagend.com
+            VIRTUAL_PORT: 8080
+        container_name: "jenkins"
+        ports:
+            - "50000:50000"
+            - "8080:8080"
+        extra_hosts:
+            - "keycloak.palagend.com:172.19.10.145"
+            - "jenkins.palagend.com:172.19.10.145"
+            - "artifactory.palagend.com:172.19.10.145"
+            - "portal.palagend.com:172.19.10.145"
+    keycloak:
+        image: "jboss/keycloak"
+        environment:
+            VIRTUAL_HOST: keycloak.palagend.com
+            KEYCLOAK_USER: admin
+            KEYCLOAK_PASSWORD: admin
+        container_name: "keycloak"
+        extra_hosts:
+            - "keycloak.palagend.com:172.19.10.145"
+            - "jenkins.palagend.com:172.19.10.145"
+            - "artifactory.palagend.com:172.19.10.145"
+            - "portal.palagend.com:172.19.10.145"
+    portal:
+        image: "hub.c.163.com/palagend/liferay-portal:7.0.4"
+        ports:
+            - "8180:8080"
+            - "8543:8443"
+        environment:
+            VIRTUAL_HOST: portal.palagend.com
+            VIRTUAL_PORT: 8080
+        container_name: "portal"
+        extra_hosts:
+            - "keycloak.palagend.com:172.19.10.145"
+            - "jenkins.palagend.com:172.19.10.145"
+            - "artifactory.palagend.com:172.19.10.145"
+            - "portal.palagend.com:172.19.10.145"
