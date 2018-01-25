@@ -25,30 +25,38 @@ services:
             VIRTUAL_PORT: 8080
         container_name: "jenkins"
         ports:
-            - "50000:50000"
             - "8080:8080"
         extra_hosts:
             - "keycloak.palagend.com:172.19.10.145"
             - "jenkins.palagend.com:172.19.10.145"
             - "artifactory.palagend.com:172.19.10.145"
             - "portal.palagend.com:172.19.10.145"
+        volumes:
+            - "$HOME/.jenkins_home:/var/jenkins_home"
     keycloak:
         image: "jboss/keycloak"
         environment:
             VIRTUAL_HOST: keycloak.palagend.com
             KEYCLOAK_USER: admin
             KEYCLOAK_PASSWORD: admin
+            MYSQL_DATABASE: keycloak
+            MYSQL_USER: keycloak
+            MYSQL_PASSWORD: MYSQL_PASSWORD
+            MYSQL_PORT_3306_TCP_ADDR: 172.19.10.21
+            MYSQL_PORT_3306_TCP_PORT: 3306
         container_name: "keycloak"
         extra_hosts:
             - "keycloak.palagend.com:172.19.10.145"
             - "jenkins.palagend.com:172.19.10.145"
             - "artifactory.palagend.com:172.19.10.145"
             - "portal.palagend.com:172.19.10.145"
+            - "redmine.palagend.com:172.19.10.145"
     portal:
-        image: "hub.c.163.com/palagend/liferay-portal:7.0.4"
+        image: "hub.fzyun.io/founder/ids-portal:base-1"
         ports:
             - "8180:8080"
-            - "8543:8443"
+            - "8443:8443"
+        command: sh /liferay/tomcat-8.0.32/bin/catalina.sh run
         environment:
             VIRTUAL_HOST: portal.palagend.com
             VIRTUAL_PORT: 8080
@@ -58,3 +66,41 @@ services:
             - "jenkins.palagend.com:172.19.10.145"
             - "artifactory.palagend.com:172.19.10.145"
             - "portal.palagend.com:172.19.10.145"
+        volumes:
+            - "$HOME/configs/portal-ext.properties:/liferay/portal-ext.properties"
+            - "$HOME/osgi-deploy/:/liferay/deploy/"
+    redmine:
+        image: "redmine:3.4"
+        ports:
+            - "3000:3000"
+        container_name: "redmine"
+        environment:
+            VIRTUAL_HOST: redmine.palagend.com
+            VIRTUAL_PORT: 3000
+        extra_hosts:
+            - "keycloak.palagend.com:172.19.10.145"
+            - "redmine.palagend.com:172.19.10.145"
+        volumes:
+            - "$HOME/.redmine_home/plugins:/usr/src/redmine/plugins"
+            - "$HOME/.redmine_home/sample-saml-initializers.rb:/usr/src/redmine/config/initializers/saml.rb"
+    gitlab:
+        image: 'gitlab/gitlab-ce:latest'
+        restart: always
+        hostname: 'gitlab.palagend.com'
+        environment:
+            GITLAB_OMNIBUS_CONFIG: |
+                external_url 'http://gitlab.palagend.com:9090'
+                gitlab_rails['gitlab_shell_ssh_port'] = 2224
+            VIRTUAL_HOST: gitlab.palagend.com
+            VIRTUAL_PORT: 9090
+        ports:
+            - '9090:9090'
+            - '2224:22'
+        volumes:
+            - '/srv/gitlab/config:/etc/gitlab'
+            - '/srv/gitlab/logs:/var/log/gitlab'
+            - '/srv/gitlab/data:/var/opt/gitlab'
+        extra_hosts:
+            - "keycloak.palagend.com:172.19.10.145"
+            - "gitlab.palagend.com:172.19.10.145"
+        container_name: "gitlab"
