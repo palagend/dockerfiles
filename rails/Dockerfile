@@ -1,6 +1,6 @@
-FROM palagend/rdk:cn
-RUN apk --no-cache add musl-dev gcc make zlib-dev &&\ 
-    apk --no-cache add ruby-dev=2.4.3-r0
+FROM ruby:alpine
+RUN sed -i 's#dl-cdn.alpinelinux.org#mirrors.ustc.edu.cn#' /etc/apk/repositories
+RUN apk --no-cache add musl-dev gcc make
 RUN apk --no-cache add sqlite sqlite-dev nodejs tzdata 
 RUN gem sources --add https://gems.ruby-china.org/ --remove https://rubygems.org/ &&\
     gem install rails --no-doc
