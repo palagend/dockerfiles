@@ -1,0 +1,20 @@
+version: '3'
+services:
+  web:
+    image: 'gitlab/gitlab-ce:latest'
+    hostname: 'gitlab.fzyun.io'
+    container_name: gitlab
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://gitlab.fzyun.io:9090'
+        gitlab_rails['gitlab_shell_ssh_port'] = 2224
+    ports:
+      - '9090:9090'
+      - '2224:22'
+    volumes:
+      - '~/Desktop/gitlab/config:/etc/gitlab'
+      - '~/Desktop/gitlab/logs:/var/log/gitlab'
+      - '~/Desktop/gitlab/data:/var/opt/gitlab'
+      - './gitlab.rb.template:/opt/gitlab/etc/gitlab.rb.template'
+    extra_hosts:
+      - 'gitlab.fzyun.io:172.19.10.23'

@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  ldap:
+    image: hub.fzyun.io/founder/openldap-proxy:latest
+    build: .
+    container_name: ldap
+    volumes:
+      - ./slapd.conf:/usr/local/etc/openldap/slapd.conf
+    ports:
+      - 1389:389

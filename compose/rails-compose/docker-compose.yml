@@ -1,0 +1,9 @@
+version: '3'
+services:
+  rails:
+    image: palagend/rails
+    volumes:
+      - '~/doc/demacia/sample_app:/sample_app'
+    ports:
+      - '4000:3000'
+    command: ['/sample_app/bin/docker-entry-point.sh']

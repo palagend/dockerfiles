@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  svn:
+    image: ids-svn-server:slim
+    build: .
+    container_name: ids-svn-server
+    volumes:
+      - /home/svn:/home/svn
+    ports:
+      - 1080:80
