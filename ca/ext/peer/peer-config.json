@@ -1,0 +1,19 @@
+{
+  "auth_keys": {
+    "key1": {
+      "key": "831cdf37d5297cc7",
+      "type": "standard"
+    }
+  },
+  "remotes": {
+    "remote1": "localhost:8888"
+  },
+  "signing": {
+    "default": {
+      "auth_remote": {
+        "auth_key": "key1",
+        "remote": "remote1"
+      }
+    }
+  }
+}

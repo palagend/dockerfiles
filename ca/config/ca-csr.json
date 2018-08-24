@@ -1,0 +1,20 @@
+{
+    "CN": "Communist Party of China",
+    "hosts": [
+        "cpc.cn",
+        "www.cpc.cn"
+    ],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "PRC",
+            "ST": "Beijing",
+            "L": "The Forbidden City",
+            "O": "Communist Party",
+            "OU": "Communist Party of China"
+        }
+    ]
+}

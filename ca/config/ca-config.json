@@ -1,0 +1,54 @@
+{
+  "signing": {
+    "default": {
+      "auth_key": "default",
+      "expiry": "720h",
+      "usages": [
+        "signing",
+        "key encipherment",
+        "client auth",
+        "server auth"
+      ]
+    },
+    "profiles": {
+      "server": {
+        "auth_key": "key1",
+        "expiry": "43800h",
+        "usages": [
+          "signing",
+          "key encipherment",
+          "server auth"
+        ]
+      },
+      "client": {
+        "auth_key": "key1",
+        "expiry": "43800h",
+        "usages": [
+          "signing",
+          "key encipherment",
+          "client auth"
+        ]
+      },
+      "peer": {
+        "auth_key": "key1",
+        "expiry": "87600h",
+        "usages": [
+          "signing",
+          "key encipherment",
+          "server auth",
+          "client auth"
+        ]
+      }
+    }
+  },
+  "auth_keys": {
+    "default": {
+      "key": "1122334455667788",
+      "type": "standard"
+    },
+    "key1": {
+      "key": "831cdf37d5297cc7",
+      "type": "standard"
+    }
+  }
+}
