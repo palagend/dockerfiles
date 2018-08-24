@@ -1,7 +1,6 @@
 {
   "signing": {
     "default": {
-      "auth_key": "default",
       "expiry": "720h",
       "usages": [
         "signing",
@@ -47,7 +46,7 @@
       "type": "standard"
     },
     "key1": {
-      "key": "831cdf37d5297cc7",
+      "key": "6226622208103842",
       "type": "standard"
     }
   }
