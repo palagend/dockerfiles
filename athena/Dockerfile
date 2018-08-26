@@ -1,7 +1,7 @@
 FROM openjdk:8-jre
 MAINTAINER Grain Stark <palagend@icloud.com>
 
-ADD app.jar /app/app.jar
+COPY app /app/
 EXPOSE 8080
 
 CMD ["java", "-jar", "/app/app.jar"]
